@@ -45,10 +45,17 @@
         form button:hover {
             background-color: #005bb5;
         }
+        .success-message {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: green;
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <form action="send_email.php" method="post">
+    <form action="https://formspree.io/f/mbljzbek" method="POST">
         <h2>Contact Us</h2>
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required>
@@ -61,5 +68,34 @@
         
         <button type="submit">Submit</button>
     </form>
+    <div class="success-message" id="success-message">
+        Thank you for contacting us! Your message has been sent.
+    </div>
+
+    <script>
+        // Optional JavaScript for Success Message
+        const form = document.querySelector('form');
+        const successMessage = document.getElementById('success-message');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+            fetch(form.action, {
+                method: form.method,
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' },
+            })
+                .then((response) => {
+                    if (response.ok) {
+                        successMessage.style.display = 'block';
+                        form.reset();
+                    } else {
+                        alert('Oops! Something went wrong. Please try again.');
+                    }
+                })
+                .catch(() => {
+                    alert('Oops! Something went wrong. Please try again.');
+                });
+        });
+    </script>
 </body>
 </html>
